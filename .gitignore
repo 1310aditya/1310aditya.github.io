@@ -1,0 +1,16 @@
+# macOS
+.DS_Store
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Resume / private docs (do not publish)
+resume_aditya.pdf
+
+# PDFs (paper PDFs do not belong in git)
+*.pdf
+
+# Local Claude state
+.claude/

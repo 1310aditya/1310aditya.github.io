@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Art — Aditya Agrawal</title>
+  <meta name="description" content="Acrylic paintings and portrait sketches by Aditya Agrawal." />
+  <meta property="og:title" content="Art — Aditya Agrawal" />
+  <meta property="og:description" content="Acrylic paintings and portrait sketches." />
+  <meta property="og:type" content="website" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="art-page">
+  <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">
+    <span aria-hidden="true">◐</span>
+  </button>
+
+  <main>
+    <section class="hero hero-compact">
+      <p class="back-link"><a href="index.html">← Back to home</a></p>
+      <h1>Art</h1>
+      <p class="bio">
+        Outside of research I paint with acrylics on canvas and sketch
+        portraits.
+      </p>
+    </section>
+
+    <section class="section section-first">
+      <div class="gallery gallery--large">
+        <figure>
+          <img src="assets/art/IMG_20170323_132417.jpg" alt="Acrylic painting on canvas" loading="lazy" />
+        </figure>
+        <figure>
+          <img src="assets/art/IMG_20170323_132430.jpg" alt="Acrylic painting on canvas" loading="lazy" />
+        </figure>
+        <figure>
+          <img src="assets/art/IMG_20170411_200230.jpg" alt="Acrylic painting on canvas" loading="lazy" />
+        </figure>
+        <figure>
+          <img src="assets/art/IMG_8687.jpg" alt="Portrait sketch" loading="lazy" />
+        </figure>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>© <span id="year"></span> Aditya Agrawal · <a href="index.html">Home</a></p>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    (function () {
+      var key = 'theme';
+      var root = document.documentElement;
+      var btn = document.getElementById('theme-toggle');
+      var saved = localStorage.getItem(key);
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var initial = saved || (prefersDark ? 'dark' : 'light');
+      root.setAttribute('data-theme', initial);
+      btn.addEventListener('click', function () {
+        var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        localStorage.setItem(key, next);
+      });
+    })();
+  </script>
+</body>
+</html>

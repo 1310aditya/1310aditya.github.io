@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Aditya Agrawal — LLM/AI Researcher</title>
+  <meta name="description" content="Aditya Agrawal — Sr. Applied Scientist at Amazon. Research on Retrieval-Augmented Generation, Opinion-Aware RAG, large language models, and personalization." />
+  <meta name="author" content="Aditya Agrawal" />
+  <meta property="og:title" content="Aditya Agrawal — LLM/AI Researcher" />
+  <meta property="og:description" content="Sr. Applied Scientist at Amazon. Research on Opinion-Aware RAG, LLMs, and applied ML." />
+  <meta property="og:type" content="website" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">
+    <span aria-hidden="true">◐</span>
+  </button>
+
+  <main>
+    <section class="hero">
+      <div class="hero-row">
+        <!-- Drop a square photo at assets/avatar.jpeg to enable. Hidden if missing. -->
+        <img class="avatar" src="assets/avatar.jpeg" alt="Aditya Agrawal" onerror="this.style.display='none'" />
+        <div class="hero-text">
+          <h1>Aditya Agrawal</h1>
+          <p class="tagline">LLM / AI Researcher · Sr. Applied Scientist @ Amazon</p>
+          <p class="currently">
+            <span class="kicker">Currently:</span>
+            Opinion-Aware Retrieval-Augmented Generation —
+            making RAG systems treat opinions, sentiment, and perspective
+            diversity as first-class signals.
+          </p>
+        </div>
+      </div>
+
+      <p class="bio">
+        I work on large language models and retrieval-augmented generation
+        (RAG). My current research argues that RAG systems are biased
+        toward factual, objective content, and proposes
+        <em>Opinion-Aware RAG</em>: architectures that treat subjectivity,
+        sentiment, and perspective diversity as first-class signals rather
+        than noise. Previously I shipped production ML for personalization
+        and catalog quality on Amazon's 2B+ product catalog.
+      </p>
+
+      <ul class="quick-links">
+        <li><a href="mailto:aditya.agrawal801@gmail.com">Email</a></li>
+        <li><a href="https://github.com/1310aditya" rel="me">GitHub</a></li>
+        <li><a href="https://linkedin.com/in/thisisadityaagrawal" rel="me">LinkedIn</a></li>
+        <li><a href="https://arxiv.org/abs/2604.12138">arXiv</a></li>
+        <li><a href="#research">Publications ↓</a></li>
+        <li><a href="art.html">Art ↗</a></li>
+      </ul>
+    </section>
+
+    <section id="research" class="section">
+      <h2>Research</h2>
+
+      <h3 class="subhead">Featured</h3>
+      <article class="pub featured">
+        <div class="pub-meta">
+          <span class="pub-year">2026</span>
+          <span class="pub-sep">·</span>
+          <span class="pub-venue">arXiv preprint</span>
+        </div>
+        <h4 class="pub-title">
+          <a href="https://arxiv.org/abs/2604.12138">Beyond Factual Grounding: The Case for Opinion-Aware Retrieval-Augmented Generation</a>
+        </h4>
+        <p class="pub-authors">
+          <strong>Aditya Agrawal</strong>, Alwarappan Nakkiran, Darshan Fofadiya, Alex Karlsson, Harsha Aduri.
+        </p>
+        <p class="pub-abstract">
+          We show that contemporary RAG systems are biased toward objective,
+          factual content — treating opinions and diverse perspectives as
+          noise rather than information to be synthesized. We formalize this
+          through the lens of uncertainty (epistemic vs. aleatoric), argue
+          that opinion-aware RAG must <em>preserve</em> posterior entropy
+          rather than minimize it, and present an Opinion-Aware RAG
+          architecture with LLM-based opinion extraction, entity-linked
+          opinion graphs, and opinion-enriched indexing. Experiments show
+          +26.8% sentiment diversity, +42.7% entity match rate, and +31.6%
+          author demographic coverage on entity-matched documents.
+        </p>
+        <p class="pub-links">
+          <a href="https://arxiv.org/abs/2604.12138">arXiv ›</a>
+        </p>
+      </article>
+
+      <h3 class="subhead">Selected work</h3>
+      <p class="note">
+        The papers below were presented at internal Amazon publications.
+        Titles, years, and high-level contributions are listed; product
+        names, proprietary datasets, and implementation specifics are
+        intentionally omitted.
+      </p>
+
+      <ol class="pub-list">
+        <li class="pub">
+          <div class="pub-meta">
+            <span class="pub-year">2023</span>
+            <span class="pub-sep">·</span>
+            <span class="pub-venue">Amazon internal publication</span>
+          </div>
+          <h4 class="pub-title">Product Catalog Cleaning by Instruction-tuned LLMs</h4>
+          <p class="pub-authors"><strong>Aditya Agrawal</strong> (1st author), et al.</p>
+          <p class="pub-abstract">
+            Studies whether instruction-tuned LLMs can detect and correct
+            noise in large e-commerce product attribute data. Demonstrates
+            that with carefully engineered prompts, off-the-shelf LLMs can
+            match or outperform human annotators on certain catalog cleaning
+            tasks (~91% noise detection rate), and outlines a cost-aware
+            inference path that scales to billion-item catalogs.
+          </p>
+        </li>
+
+        <li class="pub">
+          <div class="pub-meta">
+            <span class="pub-year">2023</span>
+            <span class="pub-sep">·</span>
+            <span class="pub-venue">Amazon internal publication</span>
+          </div>
+          <h4 class="pub-title">Customer Preferences over Product Attributes for Personalized Interactive Recommendations</h4>
+          <p class="pub-authors">Co-authored (3rd author).</p>
+          <p class="pub-abstract">
+            Self-supervised learning of customer preferences against
+            <em>explicit</em> product attributes (rather than latent factors),
+            enabling interactive, intent-aware recommendation widgets.
+            Compares sequential vs. pooling-based models and shows ~20% F1
+            improvement over a heuristic baseline; finds that aggregate
+            engagement signal often outperforms event-sequence ordering.
+          </p>
+        </li>
+
+        <li class="pub">
+          <div class="pub-meta">
+            <span class="pub-year">2022</span>
+            <span class="pub-sep">·</span>
+            <span class="pub-venue">Amazon internal publication</span>
+          </div>
+          <h4 class="pub-title">Personalized Content Targeting using Partial Brand Propensities</h4>
+          <p class="pub-authors"><strong>Aditya Agrawal</strong> (1st author), et al.</p>
+          <p class="pub-abstract">
+            A self-supervised, multi-label model that learns customers'
+            brand-level purchase propensities and uses them to target
+            recommendation content — including a heuristic that extrapolates
+            decisions to cold-start items lacking brand signal. Online A/B
+            tests showed +27% widget engagement and contributed to
+            $148M in incremental sales.
+          </p>
+        </li>
+
+        <li class="pub">
+          <div class="pub-meta">
+            <span class="pub-year">2022</span>
+            <span class="pub-sep">·</span>
+            <span class="pub-venue">Amazon internal publication</span>
+          </div>
+          <h4 class="pub-title">A Comparative Study of Traditional, Graph-Based, and Cross-Domain Models for Recipe Recommendation</h4>
+          <p class="pub-authors">Co-authored.</p>
+          <p class="pub-abstract">
+            Evaluates eight recommendation algorithms (factorization,
+            Bayesian, graph-based, cross-domain) for a highly subjective,
+            preference-driven content domain. Bayesian Personalized Ranking
+            performed best; deployment on a smart-display surface increased
+            engagement +22% over a curated/heuristic baseline.
+          </p>
+        </li>
+
+        <li class="pub">
+          <div class="pub-meta">
+            <span class="pub-year">2015–2016</span>
+            <span class="pub-sep">·</span>
+            <span class="pub-venue">IEEE</span>
+          </div>
+          <h4 class="pub-title">Earlier first-author articles in algorithms, data science, and computer networks (4)</h4>
+          <p class="pub-abstract">
+            Pre-graduate-school work; available on request.
+          </p>
+        </li>
+      </ol>
+
+      <h3 class="subhead">Service</h3>
+      <ul class="plain">
+        <li>Reviewer — SIGKDD (2023)</li>
+        <li>Reviewer — Amazon Machine Learning Conference (2020–2026)</li>
+        <li>A/B test bar-raiser — Amazon Personalization (50+ reviews)</li>
+      </ul>
+    </section>
+
+    <section id="experience" class="section">
+      <h2>Experience</h2>
+      <ol class="timeline">
+        <li>
+          <img class="org-logo" src="https://www.google.com/s2/favicons?domain=amazon.com&sz=256" alt="Amazon" loading="lazy" />
+          <div class="t-meta"><span class="t-year">2024 – present</span></div>
+          <div class="t-body">
+            <h3>Sr. Applied Scientist · Amazon</h3>
+            <p>Selling Partner Communities. Research on Opinion-Aware Retrieval-Augmented Generation for subjective, opinion-rich domains.</p>
+          </div>
+        </li>
+        <li>
+          <img class="org-logo" src="https://www.google.com/s2/favicons?domain=amazon.com&sz=256" alt="Amazon" loading="lazy" />
+          <div class="t-meta"><span class="t-year">2021 – 2024</span></div>
+          <div class="t-body">
+            <h3>Applied Scientist II · Amazon</h3>
+            <p>Production LLM-based catalog cleaning at billion-item scale. End-to-end pipelines for product attribute extraction across structured and unstructured text. Real-time, low-latency customer preference modeling on transformer encoders. Mentored junior scientists across the org.</p>
+          </div>
+        </li>
+        <li>
+          <img class="org-logo" src="https://www.google.com/s2/favicons?domain=amazon.com&sz=256" alt="Amazon" loading="lazy" />
+          <div class="t-meta"><span class="t-year">2020 – 2021</span></div>
+          <div class="t-body">
+            <h3>Applied Scientist I · Amazon</h3>
+            <p>Multi-label classification model for customer targeting, replacing a collaborative-filtering baseline. Owned the end-to-end pipeline from Python ML inference to backend integration, plus the live A/B test that promoted it to production.</p>
+          </div>
+        </li>
+        <li>
+          <img class="org-logo" src="https://www.google.com/s2/favicons?domain=amazon.com&sz=256" alt="Amazon" loading="lazy" />
+          <div class="t-meta"><span class="t-year">2019 – 2020</span></div>
+          <div class="t-body">
+            <h3>Software Developer · Amazon</h3>
+            <p>Built recommender services deployed across 11 marketplaces; ran A/B tests for Private Brands. Transitioned into Applied Science.</p>
+          </div>
+        </li>
+        <li>
+          <img class="org-logo" src="https://www.google.com/s2/favicons?domain=dell.com&sz=256" alt="Dell" loading="lazy" />
+          <div class="t-meta"><span class="t-year">2018</span></div>
+          <div class="t-body">
+            <h3>ML / Cyber Security Intern · Dell</h3>
+            <p>Anomaly detection and binary classifiers on system logs and network packets.</p>
+          </div>
+        </li>
+        <li>
+          <img class="org-logo" src="https://www.google.com/s2/favicons?domain=umass.edu&sz=256" alt="UMass Amherst" loading="lazy" />
+          <div class="t-meta"><span class="t-year">2017 – 2019</span></div>
+          <div class="t-body">
+            <h3>M.S. Computer Science · UMass Amherst</h3>
+            <p>Concentration in Data Science.</p>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <section id="contact" class="section">
+      <h2>Contact</h2>
+      <p>
+        Best reached by email — <a href="mailto:aditya.agrawal801@gmail.com">aditya.agrawal801@gmail.com</a>.
+        Also on
+        <a href="https://github.com/1310aditya">GitHub</a> and
+        <a href="https://linkedin.com/in/thisisadityaagrawal">LinkedIn</a>.
+      </p>
+      <p class="aside">
+        Outside of research, I paint with acrylics and sketch portraits —
+        see my <a href="art.html">art →</a>.
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>© <span id="year"></span> Aditya Agrawal · Plain HTML &amp; CSS, hosted on GitHub Pages.</p>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    (function () {
+      var key = 'theme';
+      var root = document.documentElement;
+      var btn = document.getElementById('theme-toggle');
+      var saved = localStorage.getItem(key);
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var initial = saved || (prefersDark ? 'dark' : 'light');
+      root.setAttribute('data-theme', initial);
+      btn.addEventListener('click', function () {
+        var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        localStorage.setItem(key, next);
+      });
+    })();
+  </script>
+</body>
+</html>
