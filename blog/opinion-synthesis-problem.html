@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Opinion Synthesis Problem: Why Search Engines Need to Stop Ignoring What People Think</title>
+  <meta name="description" content="Search engines excel at finding facts but fail at representing opinions fairly. This post explains the opinion synthesis problem and how Wasserstein-distance-based retrieval (W1-MMR) can fix it." />
+  <meta name="keywords" content="opinion synthesis, opinion-aware RAG, Wasserstein distance retrieval, W1-MMR, opinion representativeness, search engine bias, RAG diversity, aleatoric uncertainty, opinion mining" />
+  <meta name="author" content="Aditya Agrawal" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://1310aditya.github.io/blog/opinion-synthesis-problem.html" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://1310aditya.github.io/blog/opinion-synthesis-problem.html" />
+  <meta property="og:title" content="The Opinion Synthesis Problem: Why Search Engines Need to Stop Ignoring What People Think" />
+  <meta property="og:description" content="A visual explainer on why current RAG/search systems systematically suppress minority opinions and how optimal transport theory offers a principled fix." />
+  <meta property="og:site_name" content="Aditya Agrawal" />
+  <meta property="article:published_time" content="2026-06-02" />
+  <meta property="article:author" content="https://1310aditya.github.io/" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="The Opinion Synthesis Problem" />
+  <meta name="twitter:description" content="Search engines excel at facts but fail at representing opinions. Here's the math behind why — and how to fix it." />
+
+  <!-- Structured Data: BlogPosting -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "The Opinion Synthesis Problem: Why Search Engines Need to Stop Ignoring What People Think",
+    "author": {"@type": "Person", "name": "Aditya Agrawal", "url": "https://1310aditya.github.io/"},
+    "datePublished": "2026-06-02",
+    "url": "https://1310aditya.github.io/blog/opinion-synthesis-problem.html",
+    "keywords": ["opinion synthesis", "opinion-aware RAG", "Wasserstein distance", "search diversity", "aleatoric uncertainty"],
+    "about": {"@type": "ScholarlyArticle", "name": "Beyond Factual Grounding: The Case for Opinion-Aware Retrieval-Augmented Generation", "url": "https://arxiv.org/abs/2604.12138"}
+  }
+  </script>
+
+  <link rel="stylesheet" href="../styles.css" />
+  <style>
+    .blog-header { margin-bottom: 2rem; }
+    .blog-header h1 { font-size: 2rem; line-height: 1.25; margin-bottom: 0.5rem; }
+    .blog-meta { color: var(--fg-muted); font-size: 0.9rem; margin-bottom: 2rem; }
+    .blog-body h2 { margin-top: 2.5rem; font-size: 1.4rem; }
+    .blog-body h3 { margin-top: 2rem; font-size: 1.15rem; }
+    .blog-body p { margin: 1rem 0; }
+    .blog-body blockquote { border-left: 3px solid var(--accent); margin: 1.5rem 0; padding: 0.5rem 1rem; color: var(--fg-muted); font-style: italic; }
+    .blog-body code { background: var(--code-bg); padding: 0.15em 0.4em; border-radius: 3px; font-family: var(--mono); font-size: 0.88em; }
+    .blog-body .analogy { background: var(--code-bg); border-radius: 6px; padding: 1rem 1.25rem; margin: 1.5rem 0; }
+    .blog-body .analogy strong { color: var(--accent); }
+    .blog-body .equation { text-align: center; margin: 1.5rem 0; font-family: var(--mono); font-size: 0.95rem; color: var(--fg-muted); }
+    .blog-nav { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--rule); font-size: 0.9rem; }
+  </style>
+  <!-- Cloudflare Web Analytics -->
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "523ca79650224efeb1ebd99eea820f65"}'></script>
+</head>
+<body>
+  <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">
+    <span aria-hidden="true">◐</span>
+  </button>
+
+  <main>
+    <article class="blog-header">
+      <p><a href="../">← Aditya Agrawal</a></p>
+      <h1>The Opinion Synthesis Problem: Why Search Engines Need to Stop Ignoring What People Think</h1>
+      <p class="blog-meta">June 2, 2026 · 8 min read · Companion to <a href="https://arxiv.org/abs/2604.12138">arXiv:2604.12138</a></p>
+    </article>
+
+    <div class="blog-body">
+
+      <p>Ask a search engine "What is the speed of light?" and you'll get a precise, correct answer. Now ask "What do small business owners think about marketplace fee increases?" and you'll get… a few loud Reddit posts and a corporate FAQ. The difference isn't just harder search — it's a fundamentally different <em>type</em> of question that today's retrieval systems aren't designed for.</p>
+
+      <p>This post explains the <strong>opinion synthesis problem</strong> — a new challenge that emerges when AI systems (particularly RAG, retrieval-augmented generation) attempt to answer subjective questions. I'll break down the theoretical framework from <a href="https://arxiv.org/abs/2604.12138">our recent paper</a> using analogies, and argue that this is one of the most important unsolved problems in modern information retrieval.</p>
+
+      <h2>The Librarian vs. The Pollster</h2>
+
+      <div class="analogy">
+        <strong>Analogy:</strong> Imagine two professionals. A <em>librarian</em> answers your question by finding the single best source — the definitive textbook, the authoritative reference. A <em>pollster</em> answers by sampling the population — ensuring every demographic is proportionally represented, not just the loudest voices. Current search engines are librarians pretending to be pollsters.
+      </div>
+
+      <p>When you search for facts, the librarian model works perfectly. There <em>is</em> a right answer, and more evidence should converge toward it. But when you search for opinions — product sentiment, political views, community concerns — the librarian model <em>actively harms</em> you by returning only the most prominent viewpoint and burying the rest.</p>
+
+      <p>This isn't an edge case. Opinion-seeking queries account for a growing share of search traffic as users turn to AI assistants for purchase decisions, policy understanding, and community sentiment. And every RAG-powered chatbot inherits this flaw.</p>
+
+      <h2>Two Kinds of Uncertainty</h2>
+
+      <p>The theoretical foundation rests on a distinction from probability theory that maps cleanly onto information needs:</p>
+
+      <h3>Epistemic Uncertainty (The Fixable Kind)</h3>
+
+      <p>When you ask "What year was the Eiffel Tower built?", any uncertainty exists because you haven't looked it up yet. More evidence <em>reduces</em> uncertainty. The retrieval system's job is to <strong>minimize entropy</strong> — collapse the probability distribution down to the single correct answer.</p>
+
+      <div class="equation">Goal: minimize H(answer | retrieved documents)</div>
+
+      <h3>Aleatoric Uncertainty (The Feature, Not Bug)</h3>
+
+      <p>When you ask "What do sellers think about the new return policy?", there is no single correct answer. The uncertainty is <em>intrinsic to the population</em> — people genuinely disagree. More evidence shouldn't collapse to one viewpoint; it should reveal the <em>full distribution</em> of opinions. The retrieval system's job is to <strong>preserve entropy</strong>.</p>
+
+      <div class="equation">Goal: preserve H(opinions | retrieved documents) ≈ H(opinions | all documents)</div>
+
+      <div class="analogy">
+        <strong>Analogy:</strong> Epistemic uncertainty is like measuring the length of a table with an imprecise ruler — take more measurements and you converge on the true value. Aleatoric uncertainty is like polling a room on their favorite color — take more polls and you don't converge on one color; you get a better picture of the <em>distribution</em> of preferences. The second kind needs a fundamentally different retrieval strategy.
+      </div>
+
+      <h2>The Problem with "Relevance"</h2>
+
+      <p>Every modern retrieval system — BM25, dense retrieval, RAG — optimizes for <em>relevance</em>. The implicit assumption: the most relevant documents are the most useful to surface. But relevance scoring is dominated by:</p>
+
+      <ul>
+        <li><strong>Frequency:</strong> Common opinions rank higher simply because they appear more often</li>
+        <li><strong>Recency:</strong> Recent posts drown out persistent but less-frequently-restated views</li>
+        <li><strong>Engagement:</strong> Controversial or extreme opinions get more replies, boosting their apparent relevance</li>
+      </ul>
+
+      <p>The result? A systematic <em>echo chamber effect</em> embedded in the retrieval layer — before the LLM even sees the documents.</p>
+
+      <div class="analogy">
+        <strong>Analogy:</strong> Imagine polling an auditorium by volume. You'd conclude everyone agrees with whoever has the microphone. That's what relevance-ranked retrieval does to opinions — it hands the microphone to the majority and reports consensus.
+      </div>
+
+      <h2>Wasserstein Distance: The Right Yardstick</h2>
+
+      <p>How do you measure whether a retrieved subset "fairly represents" the full opinion population? You need a distance metric between two distributions: the opinions in your retrieved subset vs. the opinions in the entire corpus.</p>
+
+      <p>We use the <strong>Wasserstein-1 distance</strong> (also called Earth Mover's Distance). The intuition:</p>
+
+      <div class="analogy">
+        <strong>Analogy:</strong> Picture opinions as piles of sand on a number line (negative ← neutral → positive). The full corpus has many piles forming a landscape. Your retrieved documents form a <em>smaller</em> landscape. W1 distance measures the minimum total "work" (sand × distance moved) needed to reshape your retrieval landscape into the population landscape. Lower W1 = more representative retrieval.
+      </div>
+
+      <div class="equation">W₁(P_retrieved, P_corpus) = inf E[|X − Y|]</div>
+
+      <p>This is a principled, theoretically grounded metric — not a heuristic. It comes from <em>optimal transport theory</em>, the same mathematics used in computer vision (image morphing), economics (resource allocation), and climate science (comparing precipitation distributions).</p>
+
+      <h2>W1-MMR: Diversity With a Compass</h2>
+
+      <p>Given this yardstick, the retrieval algorithm becomes: <em>select documents that minimize W1 distance to the population distribution</em>. We combine this with Maximal Marginal Relevance (MMR), creating <strong>W1-MMR</strong>:</p>
+
+      <div class="equation">score(d) = λ · relevance(d) + (1−λ) · ΔW₁(d)</div>
+
+      <p>where ΔW₁(d) is the reduction in Wasserstein distance achieved by adding document d to the retrieved set.</p>
+
+      <div class="analogy">
+        <strong>Analogy:</strong> Standard MMR is like assembling a committee by saying "pick someone different from who we already have." W1-MMR is like saying "pick someone whose addition makes our committee's opinion profile match the electorate's." The first achieves surface diversity; the second achieves <em>distributional representativeness</em>.
+      </div>
+
+      <h2>When the Pool Isn't Deep Enough</h2>
+
+      <p>Sometimes the initial retrieval pool (say, top-100 documents) simply doesn't contain enough opinion diversity to achieve low W1 distance. Our <strong>Adaptive Pool Expansion</strong> mechanism detects this and dynamically widens the search:</p>
+
+      <ol>
+        <li>Retrieve initial pool, compute W1</li>
+        <li>If W1 exceeds threshold → expand pool (retrieve more documents from broader queries)</li>
+        <li>Repeat until W1 converges or budget exhausted</li>
+      </ol>
+
+      <div class="analogy">
+        <strong>Analogy:</strong> You're conducting a survey door-to-door. After 50 houses, your responses are 90% from one neighborhood. Adaptive pool expansion is the instinct to drive to a different neighborhood before concluding your survey — not because the first answers were wrong, but because they were unrepresentative.
+      </div>
+
+      <h2>Results: What Changes</h2>
+
+      <p>On e-commerce seller forum data (8,375 posts, 4 entity types), Opinion-Aware RAG achieves:</p>
+
+      <ul>
+        <li><strong>+26.8%</strong> sentiment diversity (more opinion viewpoints surfaced)</li>
+        <li><strong>+42.7%</strong> entity match rate (opinions correctly linked to what they're about)</li>
+        <li><strong>+31.6%</strong> demographic coverage (more distinct author perspectives)</li>
+        <li><strong>93.9%</strong> W1 reduction on dense retrieval pools (near-optimal representativeness)</li>
+      </ul>
+
+      <p>These aren't marginal improvements — they represent a qualitative shift from "here's what most people said" to "here's what the community actually thinks, in proportion."</p>
+
+      <h2>Why This Matters Now</h2>
+
+      <p>Three converging trends make opinion synthesis urgent:</p>
+
+      <ol>
+        <li><strong>RAG is the default architecture.</strong> Every major LLM deployment now retrieves documents before generating. Retrieval bias propagates to billions of AI-generated answers daily.</li>
+        <li><strong>Users trust AI summaries.</strong> When ChatGPT or Perplexity synthesizes "what people think," users accept it as representative. If the retrieval was biased, the synthesis is biased — and the user never sees the raw sources to judge.</li>
+        <li><strong>Opinion manipulation becomes trivial.</strong> If you know the system retrieves by relevance, you can game opinion synthesis by posting frequently. Distributional retrieval is inherently more robust to astroturfing because it seeks <em>coverage</em>, not volume.</li>
+      </ol>
+
+      <h2>The Bigger Picture</h2>
+
+      <p>We're at an inflection point. For twenty years, search engines presented ten blue links and let <em>you</em> form your own opinion. Now, AI systems are forming opinions <em>on your behalf</em> from retrieved evidence. The question is whether those synthesized opinions will reflect reality — or just the loudest voices in the training data.</p>
+
+      <p>Opinion-Aware RAG isn't just an engineering improvement. It's a philosophical stance: that the job of an information system answering subjective questions isn't to <em>decide</em> what people think, but to <em>faithfully represent</em> what they think — in all its messy, contradictory, irreducible diversity.</p>
+
+      <blockquote>The full paper, "Beyond Factual Grounding: The Case for Opinion-Aware Retrieval-Augmented Generation," is available at <a href="https://arxiv.org/abs/2604.12138">arXiv:2604.12138</a>.</blockquote>
+
+    </div>
+
+    <nav class="blog-nav">
+      <a href="../">← Back to homepage</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">
+    <p>© <span id="year"></span> Aditya Agrawal · Plain HTML &amp; CSS, hosted on GitHub Pages.</p>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    (function () {
+      var key = 'theme';
+      var root = document.documentElement;
+      var btn = document.getElementById('theme-toggle');
+      var saved = localStorage.getItem(key);
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var initial = saved || (prefersDark ? 'dark' : 'light');
+      root.setAttribute('data-theme', initial);
+      btn.addEventListener('click', function () {
+        var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        localStorage.setItem(key, next);
+      });
+    })();
+  </script>
+</body>
+</html>
