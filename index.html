@@ -46,17 +46,19 @@
   {
     "@context": "https://schema.org",
     "@type": "ScholarlyArticle",
-    "name": "Beyond Factual Grounding: The Case for Opinion-Aware Retrieval-Augmented Generation",
+    "name": "Retrieval-Augmented Generation Must Move Beyond Factual Grounding to Represent Diverse Opinions",
     "author": [
       {"@type": "Person", "name": "Aditya Agrawal"},
       {"@type": "Person", "name": "Alwarappan Nakkiran"},
       {"@type": "Person", "name": "Darshan Fofadiya"},
       {"@type": "Person", "name": "Alex Karlsson"},
-      {"@type": "Person", "name": "Harsha Aduri"}
+      {"@type": "Person", "name": "Harsha Aduri"},
+      {"@type": "Person", "name": "Aman Singh Thakur"}
     ],
     "datePublished": "2026-04-13",
+    "dateModified": "2026-07-08",
     "url": "https://arxiv.org/abs/2604.12138",
-    "abstract": "RAG systems are biased toward factual content. We formalize this through epistemic vs. aleatoric uncertainty and present Opinion-Aware RAG with LLM-based opinion extraction, entity-linked opinion graphs, and opinion-enriched indexing.",
+    "abstract": "This position paper argues that RAG systems exhibit a factual bias, optimizing for epistemic uncertainty reduction while ignoring the aleatoric uncertainty inherent in opinion-rich content. A survey of 34 major RAG benchmarks finds only one addresses opinion synthesis. We derive a unified objective over coverage, fidelity, and fairness using the Wasserstein distance and present Opinion-Aware RAG (O-RAG) with LLM-based opinion extraction and entity-linked opinion metadata.",
     "publisher": {"@type": "Organization", "name": "arXiv"}
   }
   </script>
@@ -118,22 +120,28 @@
           <span class="pub-venue">arXiv preprint</span>
         </div>
         <h4 class="pub-title">
-          <a href="https://arxiv.org/abs/2604.12138">Beyond Factual Grounding: The Case for Opinion-Aware Retrieval-Augmented Generation</a>
+          <a href="https://arxiv.org/abs/2604.12138">Retrieval-Augmented Generation Must Move Beyond Factual Grounding to Represent Diverse Opinions</a>
         </h4>
         <p class="pub-authors">
-          <strong>Aditya Agrawal</strong>, Alwarappan Nakkiran, Darshan Fofadiya, Alex Karlsson, Harsha Aduri.
+          <strong>Aditya Agrawal</strong>, Alwarappan Nakkiran, Darshan Fofadiya, Alex Karlsson, Harsha Aduri, Aman Singh Thakur.
         </p>
         <p class="pub-abstract">
-          We show that contemporary RAG systems are biased toward objective,
-          factual content — treating opinions and diverse perspectives as
-          noise rather than information to be synthesized. We formalize this
-          through the lens of uncertainty (epistemic vs. aleatoric), argue
-          that opinion-aware RAG must <em>preserve</em> posterior entropy
-          rather than minimize it, and present an Opinion-Aware RAG
-          architecture with LLM-based opinion extraction, entity-linked
-          opinion graphs, and opinion-enriched indexing. Experiments show
-          +26.8% sentiment diversity, +42.7% entity match rate, and +31.6%
-          author demographic coverage on entity-matched documents.
+          A position paper arguing that contemporary RAG systems carry a
+          factual bias, optimizing to reduce epistemic uncertainty while
+          ignoring the aleatoric uncertainty inherent in opinion-rich
+          content. A survey of 34 major RAG benchmarks finds only one
+          addresses opinion synthesis, suggesting the bias is structural.
+          We formalize the problem through uncertainty quantification
+          (factual queries should minimize posterior entropy; opinion
+          queries must <em>preserve</em> it) and derive a unified objective
+          over coverage, fidelity, and fairness using the Wasserstein
+          distance. As an existence proof, we present Opinion-Aware RAG
+          (O-RAG) with LLM-based opinion extraction and entity-linked
+          opinion metadata, evaluated on e-commerce seller forums and public
+          hotel reviews: an 18–48% reduction in Wasserstein distance to
+          corpus-level sentiment distributions, +26.8% sentiment diversity,
+          and +42.7% entity match rate, with human evaluators preferring
+          opinion-enriched generation 79.2% of the time.
         </p>
         <p class="pub-links">
           <a href="https://arxiv.org/abs/2604.12138">arXiv ›</a>
