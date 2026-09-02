@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Aditya Agrawal — Opinion-Aware RAG Researcher | Sr. Applied Scientist</title>
-  <meta name="description" content="Research on Opinion-Aware Retrieval-Augmented Generation — making RAG systems treat opinions, sentiment diversity, and subjective perspectives as first-class signals rather than noise. Author of arXiv:2604.12138. Sr. Applied Scientist at Amazon." />
+  <meta name="description" content="Research on Opinion-Aware Retrieval-Augmented Generation — making RAG systems treat opinions, sentiment diversity, and subjective perspectives as first-class signals rather than noise. Author of arXiv:2604.12138 and arXiv:2608.22859 (WARP). Sr. Applied Scientist at Amazon." />
   <meta name="keywords" content="opinion-aware RAG, opinion retrieval augmented generation, subjective RAG, diverse opinion retrieval, opinion mining LLM, Wasserstein retrieval, Aditya Agrawal, applied scientist, Amazon, information retrieval, NLP" />
   <meta name="author" content="Aditya Agrawal" />
   <meta name="robots" content="index, follow" />
@@ -36,12 +36,33 @@
     "sameAs": [
       "https://github.com/1310aditya",
       "https://linkedin.com/in/thisisadityaagrawal",
-      "https://arxiv.org/abs/2604.12138"
+      "https://arxiv.org/abs/2604.12138",
+      "https://arxiv.org/abs/2608.22859"
     ]
   }
   </script>
 
-  <!-- Structured Data: ScholarlyArticle -->
+  <!-- Structured Data: ScholarlyArticle (WARP) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "name": "WARP: Wasserstein-Aligned RAG for Population Opinions",
+    "author": [
+      {"@type": "Person", "name": "Aman Singh Thakur"},
+      {"@type": "Person", "name": "Aditya Agrawal"},
+      {"@type": "Person", "name": "Alwarappan Nakkiran"},
+      {"@type": "Person", "name": "Alex Karlsson"}
+    ],
+    "datePublished": "2026-08-24",
+    "url": "https://arxiv.org/abs/2608.22859",
+    "isPartOf": {"@type": "PublicationEvent", "name": "EMNLP 2026 Industry Track", "location": "Budapest, Hungary", "startDate": "2026-10-24", "endDate": "2026-10-29"},
+    "abstract": "Standard top-k retrieval ranks documents by query similarity, not by how faithfully they represent the population, so minority views quietly disappear. WARP is a family of post-retrieval algorithms that calibrate retrieved evidence to the population's opinion distribution, using Wasserstein-1 distance over sentiment-intensity bins to preserve ordinal structure that KL/JS ignore. Across three review domains covering 35K documents, 156 queries, and 26 entities, WARP's domain-matched variants reduce distributional error by at least 43% with sub-second latency, and a five-judge LLM panel preferred WARP-generated answers in 86% of decided comparisons at k ≤ 5.",
+    "publisher": {"@type": "Organization", "name": "arXiv"}
+  }
+  </script>
+
+  <!-- Structured Data: ScholarlyArticle (Position paper) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -113,6 +134,37 @@
       <h2>Research</h2>
 
       <h3 class="subhead">Featured</h3>
+      <article class="pub featured">
+        <div class="pub-meta">
+          <span class="pub-year">2026</span>
+          <span class="pub-sep">·</span>
+          <span class="pub-venue">EMNLP 2026 (Industry Track) · arXiv preprint</span>
+        </div>
+        <h4 class="pub-title">
+          <a href="https://arxiv.org/abs/2608.22859">WARP: Wasserstein-Aligned RAG for Population Opinions</a>
+        </h4>
+        <p class="pub-authors">
+          Aman Singh Thakur, <strong>Aditya Agrawal</strong>, Alwarappan Nakkiran, Alex Karlsson.
+        </p>
+        <p class="pub-abstract">
+          Standard top-k retrieval ranks documents by query similarity, not
+          by how faithfully they represent the population, so minority views
+          quietly disappear. WARP is a family of post-retrieval algorithms
+          that calibrate retrieved evidence to the population's opinion
+          distribution, using Wasserstein-1 distance over sentiment-intensity
+          bins to preserve the ordinal structure that KL/JS ignore. Three
+          variants target dense, sparse, and variable candidate pools,
+          trading calibration quality against speed. Across three review
+          domains covering 35K documents, 156 queries, and 26 entities,
+          WARP's domain-matched variants reduce distributional error by at
+          least 43% with sub-second latency; a five-judge LLM panel preferred
+          WARP-generated answers in 86% of decided comparisons at k ≤ 5.
+        </p>
+        <p class="pub-links">
+          <a href="https://arxiv.org/abs/2608.22859">arXiv ›</a>
+        </p>
+      </article>
+
       <article class="pub featured">
         <div class="pub-meta">
           <span class="pub-year">2026</span>
